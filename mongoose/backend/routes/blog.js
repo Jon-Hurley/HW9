@@ -37,13 +37,27 @@ router.post("/create-post/", async (req, res) => {
   const blog = new BlogModel({content: body.content, title: body.title});
   // remember to await .save();
   // save to mongodb
-  console.log("Made it 1")
-  await blog.save();
-  console.log("Made it here")
+  await blog.save(); // IMPLEMENT A CATCH
   // get an object representation and send it back to the client
   await mongoose.connection.close();
   console.log("DONE WITH CREATE")
   return res.send(blog.toObject());
 });
-
+router.post("/delete-post/", async (req, res) => {
+  try {
+    await mongoose.connect(CLUSTER_URL);
+  } catch (e) {
+    mongoose.connection.close();
+    console.log("BROKEN");
+  }
+  console.log("Made it to this")
+  try {
+  await BlogModel.deleteMany({})
+  } catch (e) {
+    console.log("Error!!");
+    await mongoose.connection.close();
+  }
+  await mongoose.connection.close();
+  console.log("DONE WITH DELETE")
+})
 export default router;

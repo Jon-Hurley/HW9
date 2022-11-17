@@ -9,6 +9,9 @@ export function Index() {
       <div>
         <Link to="/view">View</Link>
       </div>
+      <div>
+        <Link to="/delete">Delete</Link>
+      </div>
     </div>
   );
 }
